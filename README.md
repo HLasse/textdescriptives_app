@@ -5,9 +5,11 @@ A streamlit dashboard for extracting text metrics with TextDescriptives.
 
 ## TODO
 
-[] Add license
+[ ] Add license
 
-[] Host of huggingface
+[ ] Host of huggingface
+
+[ ] Change default text in text box to something lighter :-)
 
 ## Installation
 
