@@ -4,7 +4,7 @@ import streamlit as st
 
 class DataViewer:
 
-    #@st.cache_data
+    # @st.cache_data
     def _convert_df_to_csv(self, data, **kwargs):
         return data.to_csv(**kwargs).encode('utf-8')
 
