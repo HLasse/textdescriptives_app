@@ -110,6 +110,10 @@ if apply_settings_button and string_data is not None and string_data:
     else:
         string_data = [string_data]
 
+    # Remove empty strings
+    # E.g. due to consecutive newlines
+    string_data = [s for s in string_data if s]
+
     # Will automatically download the relevant model (´en_core_web_lg´) and extract all metrics
     # TODO: Download beforehand to speed up inference
     df = td.extract_metrics(
@@ -160,6 +164,10 @@ if split_by_newline:
     lines = text.split("\\n")
 else:
     lines = [text]
+
+# Remove empty lines
+# E.g. due to consecutive newlines
+lines = [l for l in lines if l]
 
 # Extract metrics for each line
 extracted_metrics = td.extract_metrics(
