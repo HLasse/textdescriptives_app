@@ -1,0 +1,5 @@
+textdescriptives>=2.4.4
+streamlit>=1.20.0
+watchdog
+https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.5.0/en_core_web_lg-3.5.0.tar.gz
+https://github.com/explosion/spacy-models/releases/download/da_core_news_lg-3.5.0/da_core_news_lg-3.5.0.tar.gz

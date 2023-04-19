@@ -33,8 +33,9 @@ with col2:
 st.write(
     "Calculate a large variety of statistics from text via the "
     "[**TextDescriptives**](https://github.com/HLasse/TextDescriptives) python package "
-    f"(v/{td.__version__}). "
-    "Includes descriptive statistics and metrics related to readability and dependency distance."
+    f"(v/{td.__version__}). and download the results as a .csv file. "
+    "Includes descriptive statistics and metrics related to readability, "
+    "information theory, text coherence and text quality."
 )
 
 st.caption(
@@ -109,6 +110,10 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         label="Metrics", options=metrics_options(), default=metrics_options()
     )
 
+    st.write(
+        "See the [**documentation**](https://hlasse.github.io/TextDescriptives/) for "
+        "information on the available metrics."
+    )
     # This shouldn't happen but better safe than sorry
     if isinstance(metrics, list) and not metrics:
         metrics = None

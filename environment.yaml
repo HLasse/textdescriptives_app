@@ -1,7 +1,0 @@
-name: textdesc
-dependencies:
-  - python=3.11
-  - pip:
-    - textdescriptives>=2.4.4
-    - streamlit>=1.20.0
-    - watchdog
