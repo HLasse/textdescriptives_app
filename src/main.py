@@ -129,3 +129,34 @@ if apply_settings_button and string_data is not None and string_data:
     df = df.transpose().reset_index()
     df.columns = ["Metric"] + [str(c) for c in list(df.columns)[1:]]
     st.dataframe(data=df, use_container_width=True)
+
+with st.expander("See python code"):
+
+     st.code(
+        """
+import textdescriptives as td
+
+# Given a string of text and the settings
+text = "..."
+model_name = "..."
+split_by_newline = True
+
+# Remove whitespace from both ends of the string
+text = text.strip()
+
+# When asked, split by newlines
+if split_by_newline:
+    lines = text.split("\\n")
+else:
+    lines = [text]
+
+# Extract metrics for each line
+extracted_metrics = td.extract_metrics(
+    text=lines,
+    spacy_model=model_name
+)
+
+""", 
+        language="python", 
+        line_numbers=True
+    )
