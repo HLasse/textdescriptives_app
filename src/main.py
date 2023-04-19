@@ -87,23 +87,28 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
             max_chars=None
         )
 
-    # Selection of language
-    language_pretty = st.selectbox(
-        label="Language",
-        options=list(language_options().keys()),
-        index=0
-    )
+    # Row of selectors
+    col1, col2 = st.columns([1, 1])
 
-    language_short = language_options()[language_pretty]
+    with col1:
+        # Selection of language
+        language_pretty = st.selectbox(
+            label="Language",
+            options=list(language_options().keys()),
+            index=0
+        )
 
-    # Selection of model size
-    model_size_pretty = st.selectbox(
-        label="Model Size",
-        options=list(model_size_options().keys()),
-        index=0
-    )
+        language_short = language_options()[language_pretty]
 
-    model_size_short = model_size_options()[model_size_pretty]
+    with col2:
+        # Selection of model size
+        model_size_pretty = st.selectbox(
+            label="Model Size",
+            options=list(model_size_options().keys()),
+            index=0
+        )
+
+        model_size_short = model_size_options()[model_size_pretty]
 
     # Selection of metrics
     # Enable to allow selection of metrics
