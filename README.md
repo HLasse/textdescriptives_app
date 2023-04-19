@@ -7,9 +7,14 @@ A streamlit dashboard for extracting text metrics with TextDescriptives.
 
 [ ] Add license
 
-[ ] Host of huggingface
+[ ] Host on huggingface / streamlit cloud
 
 [ ] Change default text in text box to something lighter :-)
+
+[ ] Ensure environment.yaml works - currently just added stuff manually. When it works, perhaps update installation notes below.
+
+[ ] Ensure models are pre-downloaded to speed up inference
+
 
 ## Installation
 
