@@ -15,6 +15,8 @@ A streamlit dashboard for extracting text metrics with TextDescriptives.
 
 [ ] Ensure models are pre-downloaded to speed up inference
 
+[ ] When supporting the transformer models, we should pre-install the dependencies to avoid it happening at runtime.
+
 
 ## Installation
 

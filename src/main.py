@@ -9,6 +9,7 @@ import textdescriptives as td
 import numpy as np
 
 from data_viewer import DataViewer
+from options import language_options, metrics_options, model_size_options
 
 
 ################
@@ -86,12 +87,40 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
             max_chars=None
         )
 
-    # Selection of model to use
-    model_name = st.selectbox(
-        label="Model",
-        options=["en_core_web_sm", "en_core_web_lg"],
+    # Selection of language
+    language_pretty = st.selectbox(
+        label="Language",
+        options=list(language_options().keys()),
         index=0
     )
+
+    language_short = language_options()[language_pretty]
+
+    # Selection of model size
+    model_size_pretty = st.selectbox(
+        label="Model Size",
+        options=list(model_size_options().keys()),
+        index=0
+    )
+
+    model_size_short = model_size_options()[model_size_pretty]
+
+    # Selection of metrics
+    metrics = None
+
+    # Enable to allow selection of metrics
+    if False:
+
+        # Multiselection of metrics
+        metrics = st.multiselect(
+            label="Metrics",
+            options=metrics_options(),
+            default=metrics_options()
+        )
+
+        # This shouldn't happen but better safe than sorry
+        if isinstance(metrics, list) and not metrics:
+            metrics = None
 
     apply_settings_button = st.form_submit_button(label='Apply')
 
@@ -114,12 +143,13 @@ if apply_settings_button and string_data is not None and string_data:
     # E.g. due to consecutive newlines
     string_data = [s for s in string_data if s]
 
-    # Will automatically download the relevant model (´en_core_web_lg´) and extract all metrics
+    # Will automatically download the relevant model and extract all metrics
     # TODO: Download beforehand to speed up inference
     df = td.extract_metrics(
         text=string_data,
-        spacy_model=model_name,
-        metrics=None
+        lang=language_short,
+        spacy_model_size=model_size_short,
+        metrics=metrics
     )
 
     ###################
