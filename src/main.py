@@ -10,9 +10,11 @@ import numpy as np
 
 from data_viewer import DataViewer
 
+
 ################
 # Introduction #
 ################
+
 
 col1, col2 = st.columns([9, 2])
 with col1:
@@ -35,9 +37,11 @@ st.caption(
     "[arXiv preprint arXiv:2301.02057](https://arxiv.org/abs/2301.02057)"
 )
 
+
 ############
 # Settings #
 ############
+
 
 input_choice = st.radio(
     label="Input",
@@ -96,6 +100,7 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
 # Apply NLP #
 #############
 
+
 if apply_settings_button and string_data is not None and string_data:
 
     # Clean and (optionally) split the text
@@ -130,9 +135,15 @@ if apply_settings_button and string_data is not None and string_data:
     df.columns = ["Metric"] + [str(c) for c in list(df.columns)[1:]]
     st.dataframe(data=df, use_container_width=True)
 
+
+############################
+# Code For Reproducibility #
+############################
+
+
 with st.expander("See python code"):
 
-     st.code(
+    st.code(
         """
 import textdescriptives as td
 
@@ -156,7 +167,7 @@ extracted_metrics = td.extract_metrics(
     spacy_model=model_name
 )
 
-""", 
-        language="python", 
+""",
+        language="python",
         line_numbers=True
     )
