@@ -1,5 +1,4 @@
-
-from typing import List, Dict, Set
+from typing import Dict, List, Set
 
 from spacy.cli.download import get_compatibility
 
@@ -11,15 +10,36 @@ def metrics_options() -> List[str]:
         "dependency_distance",
         "pos_proportions",
         "coherence",
-        "quality"
+        "quality",
     ]
 
 
 def language_options() -> Dict[str, str]:
     return {
-        "English": "en",
+        "Catalan": "ca",
+        "Chinese": "zh",
+        "Croatian": "hr",
         "Danish": "da",
-        "Croatian": "hr"
+        "Dutch": "nl",
+        "English": "en",
+        "Finnish": "fi",
+        "French": "fr",
+        "German": "de",
+        "Greek": "el",
+        "Italian": "it",
+        "Japanese": "ja",
+        "Korean": "ko",
+        "Lithuanian": "lt",
+        "Macedonian": "mk",
+        "Multi-language": "xx",
+        "Norwegian Bokmål": "nb",
+        "Polish": "pl",
+        "Portuguese": "pt",
+        "Romanian": "ro",
+        "Russian": "ru",
+        "Spanish": "es",
+        "Swedish": "sv",
+        "Ukrainian": "uk",
     }
 
 
@@ -33,7 +53,7 @@ def all_model_size_options_pretty_to_short() -> Dict[str, str]:
         "Small": "sm",
         "Medium": "md",
         "Large": "lg",
-        #"Transformer": "trf"  # Disabled for now
+        # "Transformer": "trf"  # Disabled for now
     }
 
 
@@ -48,14 +68,17 @@ def available_model_size_options(lang) -> List[str]:
     short_to_pretty = all_model_size_options_short_to_pretty()
     if lang == "all":
         return sorted(list(short_to_pretty.values()))
-    return sorted([
-        short_to_pretty[short]
-        for short in ModelAvailabilityChecker.available_model_sizes_for_language(lang)
-    ])
+    return sorted(
+        [
+            short_to_pretty[short]
+            for short in ModelAvailabilityChecker.available_model_sizes_for_language(
+                lang
+            )
+        ]
+    )
 
 
-class ModelAvailabilityChecker():
-
+class ModelAvailabilityChecker:
     @staticmethod
     def available_models() -> List[str]:
         return list(get_compatibility().keys())
@@ -63,23 +86,32 @@ class ModelAvailabilityChecker():
     @staticmethod
     def extract_language_and_size() -> List[List[str]]:
         # [["ca", "sm"], ["en", "lg"], ...]
-        return list([
-            list(map(m.split("_").__getitem__, [0, -1]))
-            for m in ModelAvailabilityChecker.available_models()
-        ])
+        return list(
+            [
+                list(map(m.split("_").__getitem__, [0, -1]))
+                for m in ModelAvailabilityChecker.available_models()
+            ]
+        )
 
     @staticmethod
     def model_is_available(lang: str, size: str) -> bool:
-        lang_and_size = set([
-            "_".join(lang_size)
-            for lang_size in ModelAvailabilityChecker.extract_language_and_size()
-        ])
+        lang_and_size = set(
+            [
+                "_".join(lang_size)
+                for lang_size in ModelAvailabilityChecker.extract_language_and_size()
+            ]
+        )
         return f"{lang}_{size}" in lang_and_size
 
     @staticmethod
     def available_model_sizes_for_language(lang: str) -> Set[str]:
-        return set([
-            size
-            for (lang_, size) in ModelAvailabilityChecker.extract_language_and_size()
-            if lang_ == lang
-        ])
+        return set(
+            [
+                size
+                for (
+                    lang_,
+                    size,
+                ) in ModelAvailabilityChecker.extract_language_and_size()
+                if lang_ == lang
+            ]
+        )
