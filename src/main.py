@@ -106,11 +106,8 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
     model_size_short = model_size_options()[model_size_pretty]
 
     # Selection of metrics
-    metrics = None
-
     # Enable to allow selection of metrics
     if False:
-
         # Multiselection of metrics
         metrics = st.multiselect(
             label="Metrics",
@@ -121,6 +118,8 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         # This shouldn't happen but better safe than sorry
         if isinstance(metrics, list) and not metrics:
             metrics = None
+    else:
+        metrics = None
 
     apply_settings_button = st.form_submit_button(label='Apply')
 
