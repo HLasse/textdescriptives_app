@@ -4,13 +4,18 @@ Dashboard for showcasing extraction of text metrics with textdescriptives.
 """
 
 from io import StringIO
+
+import numpy as np
 import streamlit as st
 import textdescriptives as td
-import numpy as np
 
 from data_viewer import DataViewer
-from options import language_options, metrics_options, all_model_size_options_pretty_to_short, available_model_size_options
-
+from options import (
+    all_model_size_options_pretty_to_short,
+    available_model_size_options,
+    language_options,
+    metrics_options,
+)
 
 ################
 # Introduction #
@@ -45,34 +50,24 @@ st.caption(
 
 
 input_choice = st.radio(
-    label="Input",
-    options=["Enter text", "Upload file"],
-    index=0,
-    horizontal=True
+    label="Input", options=["Enter text", "Upload file"], index=0, horizontal=True
 )
 
-with st.form(key='settings_form'):
-
+with st.form(key="settings_form"):
     split_by_line = st.checkbox(label="Split by newline", value=True)
 
     string_data = None
 
     if input_choice == "Upload file":
-
         uploaded_file = st.file_uploader(
-            label="Choose a .txt file",
-            type=["txt"],
-            accept_multiple_files=False
+            label="Choose a .txt file", type=["txt"], accept_multiple_files=False
         )
 
         if uploaded_file is not None:
             # To convert to a string based IO:
-            string_data = StringIO(
-                uploaded_file.getvalue().decode("utf-8")
-            ).read()
+            string_data = StringIO(uploaded_file.getvalue().decode("utf-8")).read()
 
     else:
-
         default_text = """Little interest or pleasure in doing things?
 Feeling down, depressed, or hopeless?
 Trouble falling or staying asleep, or sleeping too much?
@@ -81,10 +76,7 @@ Poor appetite or overeating?
 Feeling bad about yourself - or that you are a failure or have let yourself or your family down?"""
 
         string_data = st.text_area(
-            label="Enter text",
-            value=default_text,
-            height=170,
-            max_chars=None
+            label="Enter text", value=default_text, height=170, max_chars=None
         )
 
     # Row of selectors
@@ -95,8 +87,8 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         language_pretty = st.selectbox(
             label="Language",
             options=list(language_options().keys()),
-            index=0,
-            key="language_selector"
+            index=5,
+            key="language_selector",
         )
 
         language_short = language_options()[language_pretty]
@@ -107,24 +99,21 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
             label="Model Size",
             options=available_model_size_options(lang="all"),
             index=0,
-            key="size_selector"
+            key="size_selector",
         )
 
-        model_size_short = all_model_size_options_pretty_to_short()[
-            model_size_pretty]
+        model_size_short = all_model_size_options_pretty_to_short()[model_size_pretty]
 
     # Multiselection of metrics
     metrics = st.multiselect(
-        label="Metrics",
-        options=metrics_options(),
-        default=metrics_options()
+        label="Metrics", options=metrics_options(), default=metrics_options()
     )
 
     # This shouldn't happen but better safe than sorry
     if isinstance(metrics, list) and not metrics:
         metrics = None
 
-    apply_settings_button = st.form_submit_button(label='Apply')
+    apply_settings_button = st.form_submit_button(label="Apply")
 
 
 #############
@@ -133,9 +122,10 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
 
 
 if apply_settings_button and string_data is not None and string_data:
-
     if model_size_pretty not in available_model_size_options(lang=language_short):
-        st.write("**Sorry!** The chosen *model size* is not available in this language. Please try another.")
+        st.write(
+            "**Sorry!** The chosen *model size* is not available in this language. Please try another."
+        )
     else:
         # Clean and (optionally) split the text
         string_data = string_data.strip()
@@ -154,7 +144,7 @@ if apply_settings_button and string_data is not None and string_data:
             text=string_data,
             lang=language_short,
             spacy_model_size=model_size_short,
-            metrics=metrics
+            metrics=metrics,
         )
 
         ###################
@@ -164,9 +154,7 @@ if apply_settings_button and string_data is not None and string_data:
         # Create 2 columns with 1) the output header
         # and 2) a download button
         DataViewer()._header_and_download(
-            header="The calculated metrics",
-            data=df,
-            file_name="text_metrics.csv"
+            header="The calculated metrics", data=df, file_name="text_metrics.csv"
         )
 
         st.write("**Note**: This data frame has been transposed for readability.")
@@ -181,7 +169,6 @@ if apply_settings_button and string_data is not None and string_data:
 
 
 with st.expander("See python code"):
-
     st.code(
         """
 import textdescriptives as td
@@ -212,5 +199,5 @@ extracted_metrics = td.extract_metrics(
 
 """,
         language="python",
-        line_numbers=True
+        line_numbers=True,
     )
