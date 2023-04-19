@@ -204,5 +204,4 @@ extracted_metrics = td.extract_metrics(
 
 """,
         language="python",
-        line_numbers=True,
     )
