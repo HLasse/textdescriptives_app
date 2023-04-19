@@ -81,5 +81,5 @@ class ModelAvailabilityChecker():
         return set([
             size
             for (lang_, size) in ModelAvailabilityChecker.extract_language_and_size()
-            if lang_ == lang
+            if lang_ == lang and size in all_model_size_options_pretty_to_short().values()
         ])
