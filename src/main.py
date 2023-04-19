@@ -9,7 +9,7 @@ import textdescriptives as td
 import numpy as np
 
 from data_viewer import DataViewer
-from options import language_options, metrics_options, model_size_options
+from options import language_options, metrics_options, all_model_size_options_pretty_to_short, available_model_size_options
 
 
 ################
@@ -95,7 +95,8 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         language_pretty = st.selectbox(
             label="Language",
             options=list(language_options().keys()),
-            index=0
+            index=0,
+            key="language_selector"
         )
 
         language_short = language_options()[language_pretty]
@@ -104,26 +105,23 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         # Selection of model size
         model_size_pretty = st.selectbox(
             label="Model Size",
-            options=list(model_size_options().keys()),
-            index=0
+            options=available_model_size_options(lang="all"),
+            index=0,
+            key="size_selector"
         )
 
-        model_size_short = model_size_options()[model_size_pretty]
+        model_size_short = all_model_size_options_pretty_to_short()[
+            model_size_pretty]
 
-    # Selection of metrics
-    # Enable to allow selection of metrics
-    if False:
-        # Multiselection of metrics
-        metrics = st.multiselect(
-            label="Metrics",
-            options=metrics_options(),
-            default=metrics_options()
-        )
+    # Multiselection of metrics
+    metrics = st.multiselect(
+        label="Metrics",
+        options=metrics_options(),
+        default=metrics_options()
+    )
 
-        # This shouldn't happen but better safe than sorry
-        if isinstance(metrics, list) and not metrics:
-            metrics = None
-    else:
+    # This shouldn't happen but better safe than sorry
+    if isinstance(metrics, list) and not metrics:
         metrics = None
 
     apply_settings_button = st.form_submit_button(label='Apply')
@@ -136,42 +134,45 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
 
 if apply_settings_button and string_data is not None and string_data:
 
-    # Clean and (optionally) split the text
-    string_data = string_data.strip()
-    if split_by_line:
-        string_data = string_data.split("\n")
+    if model_size_pretty not in available_model_size_options(lang=language_short):
+        st.write("**Sorry!** The chosen *model size* is not available in this language. Please try another.")
     else:
-        string_data = [string_data]
+        # Clean and (optionally) split the text
+        string_data = string_data.strip()
+        if split_by_line:
+            string_data = string_data.split("\n")
+        else:
+            string_data = [string_data]
 
-    # Remove empty strings
-    # E.g. due to consecutive newlines
-    string_data = [s for s in string_data if s]
+        # Remove empty strings
+        # E.g. due to consecutive newlines
+        string_data = [s for s in string_data if s]
 
-    # Will automatically download the relevant model and extract all metrics
-    # TODO: Download beforehand to speed up inference
-    df = td.extract_metrics(
-        text=string_data,
-        lang=language_short,
-        spacy_model_size=model_size_short,
-        metrics=metrics
-    )
+        # Will automatically download the relevant model and extract all metrics
+        # TODO: Download beforehand to speed up inference
+        df = td.extract_metrics(
+            text=string_data,
+            lang=language_short,
+            spacy_model_size=model_size_short,
+            metrics=metrics
+        )
 
-    ###################
-    # Present Results #
-    ###################
+        ###################
+        # Present Results #
+        ###################
 
-    # Create 2 columns with 1) the output header
-    # and 2) a download button
-    DataViewer()._header_and_download(
-        header="The calculated metrics",
-        data=df,
-        file_name="text_metrics.csv"
-    )
+        # Create 2 columns with 1) the output header
+        # and 2) a download button
+        DataViewer()._header_and_download(
+            header="The calculated metrics",
+            data=df,
+            file_name="text_metrics.csv"
+        )
 
-    st.write("**Note**: This data frame has been transposed for readability.")
-    df = df.transpose().reset_index()
-    df.columns = ["Metric"] + [str(c) for c in list(df.columns)[1:]]
-    st.dataframe(data=df, use_container_width=True)
+        st.write("**Note**: This data frame has been transposed for readability.")
+        df = df.transpose().reset_index()
+        df.columns = ["Metric"] + [str(c) for c in list(df.columns)[1:]]
+        st.dataframe(data=df, use_container_width=True)
 
 
 ############################
