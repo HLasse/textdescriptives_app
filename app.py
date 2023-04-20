@@ -34,9 +34,13 @@ with col2:
 st.write(
     "Calculate a large variety of statistics from text via the "
     "[**TextDescriptives**](https://github.com/HLasse/TextDescriptives) python package "
-    f"(v/{td.__version__}). and download the results as a .csv file. "
+    f"(v/{td.__version__}) and download the results as a .csv file. "
     "Includes descriptive statistics and metrics related to readability, "
     "information theory, text coherence and text quality."
+)
+st.write(
+    "The source code for this application can be found on [**GitHub**](https://github.com/HLasse/TextDescriptives_app). "
+    "If you have feedback, please open an [issue](https://github.com/HLasse/textdescriptives_app/issues)."
 )
 
 st.caption(
