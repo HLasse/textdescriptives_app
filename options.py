@@ -11,6 +11,7 @@ def metrics_options() -> List[str]:
         "pos_proportions",
         "coherence",
         "quality",
+        "information_theory",
     ]
 
 
