@@ -120,6 +120,7 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         "See the [**documentation**](https://hlasse.github.io/TextDescriptives/) for "
         "information on the available metrics."
     )
+    
     # This shouldn't happen but better safe than sorry
     if isinstance(metrics, list) and not metrics:
         metrics = None
