@@ -38,6 +38,7 @@ st.write(
     "Includes descriptive statistics and metrics related to readability, "
     "information theory, text coherence and text quality."
 )
+
 st.write(
     "The source code for this application can be found on [**GitHub**](https://github.com/HLasse/TextDescriptives_app). "
     "If you have feedback, please open an [issue](https://github.com/HLasse/textdescriptives_app/issues)."
@@ -185,7 +186,9 @@ import textdescriptives as td
 
 # Given a string of text and the settings
 text = "..."
-model_name = "..."
+language = "..."
+model_size = "..."
+metrics = [...]
 split_by_newline = True
 
 # Remove whitespace from both ends of the string
@@ -204,7 +207,9 @@ lines = [l for l in lines if l]
 # Extract metrics for each line
 extracted_metrics = td.extract_metrics(
     text=lines,
-    spacy_model=model_name
+    lang=language,
+    spacy_model_size=model_size,
+    metrics=metrics
 )
 
 """,
