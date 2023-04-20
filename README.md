@@ -1,6 +1,6 @@
 # TextDescriptives Demo
 
-A streamlit dashboard for extracting text metrics with TextDescriptives.
+A streamlit dashboard for extracting text metrics with TextDescriptives. Live at https://huggingface.co/spaces/HLasse/textdescriptives
 
 
 ## TODO
