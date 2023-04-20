@@ -27,15 +27,21 @@ with col1:
     st.title("Extract Text Statistics")
 with col2:
     st.image(
-        "https://github.com/HLasse/TextDescriptives/raw/main/docs/_static/icon.png"
+        "https://github.com/HLasse/TextDescriptives/raw/main/docs/_static/icon.png",
+        width=125
     )
 
 st.write(
     "Calculate a large variety of statistics from text via the "
     "[**TextDescriptives**](https://github.com/HLasse/TextDescriptives) python package "
-    f"(v/{td.__version__}). and download the results as a .csv file. "
+    f"(v/{td.__version__}) and download the results as a .csv file. "
     "Includes descriptive statistics and metrics related to readability, "
     "information theory, text coherence and text quality."
+)
+
+st.write(
+    "The source code for this application can be found on [**GitHub**](https://github.com/HLasse/TextDescriptives_app). "
+    "If you have feedback, please open an [issue](https://github.com/HLasse/textdescriptives_app/issues)."
 )
 
 st.caption(
@@ -69,15 +75,14 @@ with st.form(key="settings_form"):
             string_data = StringIO(uploaded_file.getvalue().decode("utf-8")).read()
 
     else:
-        default_text = """Little interest or pleasure in doing things?
-Feeling down, depressed, or hopeless?
-Trouble falling or staying asleep, or sleeping too much?
-Feeling tired or having little energy?
-Poor appetite or overeating?
-Feeling bad about yourself - or that you are a failure or have let yourself or your family down?"""
+        default_text = """Hello, morning dew. The grass whispers low.
+I'm here to dance. The gentle breeze does show.
+Good morning, world. The birds sing in delight.
+Let's spread our wings. The butterflies take flight.
+Nature's chorus sings, a symphony of light."""
 
         string_data = st.text_area(
-            label="Enter text", value=default_text, height=170, max_chars=None
+            label="Enter text", value=default_text, height=145, max_chars=None
         )
 
     # Row of selectors
@@ -114,6 +119,7 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         "See the [**documentation**](https://hlasse.github.io/TextDescriptives/) for "
         "information on the available metrics."
     )
+
     # This shouldn't happen but better safe than sorry
     if isinstance(metrics, list) and not metrics:
         metrics = None
@@ -180,7 +186,9 @@ import textdescriptives as td
 
 # Given a string of text and the settings
 text = "..."
-model_name = "..."
+language = "..."
+model_size = "..."
+metrics = [...]
 split_by_newline = True
 
 # Remove whitespace from both ends of the string
@@ -199,7 +207,9 @@ lines = [l for l in lines if l]
 # Extract metrics for each line
 extracted_metrics = td.extract_metrics(
     text=lines,
-    spacy_model=model_name
+    lang=language,
+    spacy_model_size=model_size,
+    metrics=metrics
 )
 
 """,
