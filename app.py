@@ -75,15 +75,14 @@ with st.form(key="settings_form"):
             string_data = StringIO(uploaded_file.getvalue().decode("utf-8")).read()
 
     else:
-        default_text = """Little interest or pleasure in doing things?
-Feeling down, depressed, or hopeless?
-Trouble falling or staying asleep, or sleeping too much?
-Feeling tired or having little energy?
-Poor appetite or overeating?
-Feeling bad about yourself - or that you are a failure or have let yourself or your family down?"""
+        default_text = """Hello, morning dew. The grass whispers low.
+I'm here to dance. The gentle breeze does show.
+Good morning, world. The birds sing in delight.
+Let's spread our wings. The butterflies take flight.
+Nature's chorus sings, a symphony of light."""
 
         string_data = st.text_area(
-            label="Enter text", value=default_text, height=170, max_chars=None
+            label="Enter text", value=default_text, height=145, max_chars=None
         )
 
     # Row of selectors
@@ -120,7 +119,7 @@ Feeling bad about yourself - or that you are a failure or have let yourself or y
         "See the [**documentation**](https://hlasse.github.io/TextDescriptives/) for "
         "information on the available metrics."
     )
-    
+
     # This shouldn't happen but better safe than sorry
     if isinstance(metrics, list) and not metrics:
         metrics = None

@@ -7,8 +7,6 @@ A streamlit dashboard for extracting text metrics with TextDescriptives.
 
 [ ] Add license
 
-[ ] Change default text in text box to something lighter :-)
-
 
 ## Installation
 
