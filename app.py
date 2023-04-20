@@ -27,7 +27,8 @@ with col1:
     st.title("Extract Text Statistics")
 with col2:
     st.image(
-        "https://github.com/HLasse/TextDescriptives/raw/main/docs/_static/icon.png"
+        "https://github.com/HLasse/TextDescriptives/raw/main/docs/_static/icon.png",
+        width=125
     )
 
 st.write(
