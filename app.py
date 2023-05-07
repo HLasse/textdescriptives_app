@@ -5,11 +5,12 @@ Dashboard for showcasing extraction of text metrics with textdescriptives.
 
 from io import StringIO
 
-import numpy as np
+import pandas as pd
 import streamlit as st
 import textdescriptives as td
 
 from data_viewer import DataViewer
+from process_text import text_to_metrics
 from options import (
     all_model_size_options_pretty_to_short,
     available_model_size_options,
@@ -28,7 +29,7 @@ with col1:
 with col2:
     st.image(
         "https://github.com/HLasse/TextDescriptives/raw/main/docs/_static/icon.png",
-        width=125
+        width=125,
     )
 
 st.write(
@@ -46,8 +47,8 @@ st.write(
 
 st.caption(
     "Hansen, L., Olsen, L. R., & Enevoldsen, K. (2023). TextDescriptives: A Python package for "
-    "calculating a large variety of statistics from text. "
-    "[arXiv preprint arXiv:2301.02057](https://arxiv.org/abs/2301.02057)"
+    "calculating a large variety of metrics from text. [Journal of Open Source Software, 8(84), "
+    "5153, https://doi.org/10.21105/joss.05153](https://doi.org/10.21105/joss.05153)"
 )
 
 
@@ -57,22 +58,25 @@ st.caption(
 
 
 input_choice = st.radio(
-    label="Input", options=["Enter text", "Upload file"], index=0, horizontal=True
+    label="Input", options=["Enter text", "Upload file(s)"], index=0, horizontal=True
 )
 
 with st.form(key="settings_form"):
     split_by_line = st.checkbox(label="Split by newline", value=True)
 
-    string_data = None
+    file_name_to_text_string = {}
 
-    if input_choice == "Upload file":
-        uploaded_file = st.file_uploader(
-            label="Choose a .txt file", type=["txt"], accept_multiple_files=False
+    if input_choice == "Upload file(s)":
+        uploaded_files = st.file_uploader(
+            label="Choose a .txt file", type=["txt"], accept_multiple_files=True
         )
 
-        if uploaded_file is not None:
+        if uploaded_files is not None and len(uploaded_files) > 0:
             # To convert to a string based IO:
-            string_data = StringIO(uploaded_file.getvalue().decode("utf-8")).read()
+            file_name_to_text_string = {
+                file.name: StringIO(file.getvalue().decode("utf-8")).read()
+                for file in uploaded_files
+            }
 
     else:
         default_text = """Hello, morning dew. The grass whispers low.
@@ -81,9 +85,11 @@ Good morning, world. The birds sing in delight.
 Let's spread our wings. The butterflies take flight.
 Nature's chorus sings, a symphony of light."""
 
-        string_data = st.text_area(
-            label="Enter text", value=default_text, height=145, max_chars=None
-        )
+        file_name_to_text_string = {
+            "input": st.text_area(
+                label="Enter text", value=default_text, height=145, max_chars=None
+            )
+        }
 
     # Row of selectors
     col1, col2 = st.columns([1, 1])
@@ -132,30 +138,26 @@ Nature's chorus sings, a symphony of light."""
 #############
 
 
-if apply_settings_button and string_data is not None and string_data:
+if apply_settings_button and len(file_name_to_text_string) > 0:
     if model_size_pretty not in available_model_size_options(lang=language_short):
         st.write(
             "**Sorry!** The chosen *model size* is not available in this language. Please try another."
         )
     else:
-        # Clean and (optionally) split the text
-        string_data = string_data.strip()
-        if split_by_line:
-            string_data = string_data.split("\n")
-        else:
-            string_data = [string_data]
-
-        # Remove empty strings
-        # E.g. due to consecutive newlines
-        string_data = [s for s in string_data if s]
-
-        # Will automatically download the relevant model and extract all metrics
-        # TODO: Download beforehand to speed up inference
-        df = td.extract_metrics(
-            text=string_data,
-            lang=language_short,
-            spacy_model_size=model_size_short,
-            metrics=metrics,
+        # Extract metrics for each text
+        output_df = pd.concat(
+            [
+                text_to_metrics(
+                    string=string,
+                    language_short=language_short,
+                    model_size_short=model_size_short,
+                    metrics=metrics,
+                    split_by_line=split_by_line,
+                    filename=filename if "Upload" in input_choice else None,
+                )
+                for filename, string in file_name_to_text_string.items()
+            ],
+            ignore_index=True,
         )
 
         ###################
@@ -165,13 +167,15 @@ if apply_settings_button and string_data is not None and string_data:
         # Create 2 columns with 1) the output header
         # and 2) a download button
         DataViewer()._header_and_download(
-            header="The calculated metrics", data=df, file_name="text_metrics.csv"
+            header="The calculated metrics",
+            data=output_df,
+            file_name="text_metrics.csv",
         )
 
         st.write("**Note**: This data frame has been transposed for readability.")
-        df = df.transpose().reset_index()
-        df.columns = ["Metric"] + [str(c) for c in list(df.columns)[1:]]
-        st.dataframe(data=df, use_container_width=True)
+        output_df = output_df.transpose().reset_index()
+        output_df.columns = ["Metric"] + [str(c) for c in list(output_df.columns)[1:]]
+        st.dataframe(data=output_df, use_container_width=True)
 
 
 ############################
@@ -182,6 +186,10 @@ if apply_settings_button and string_data is not None and string_data:
 with st.expander("See python code"):
     st.code(
         """
+# Note: This is the code for a single text file
+# The actual code is slightly more complex
+# to allow processing multiple files at once
+
 import textdescriptives as td
 
 # Given a string of text and the settings
