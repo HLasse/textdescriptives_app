@@ -223,3 +223,35 @@ extracted_metrics = td.extract_metrics(
 """,
         language="python",
     )
+
+#######
+# FAQ #
+#######
+
+st.subheader("Frequently Asked Questions (FAQ)")
+
+with st.expander("What does the 'Split by newline' option do?"):
+    st.write(
+        """
+    When the `Split by newline` option is `enabled`, the metrics calculation is 
+    performed separately for each paragraph. I.e. whenever there's a line break, 
+    we split the text.
+
+    When this option is `disabled`, the entire text is processed at once.
+    """
+    )
+
+with st.expander(
+    "Why do I get a warning/error message for certain languages or model sizes?"
+):
+    st.write(
+        """
+    Some combinations of languages, model sizes, and metrics are not currently supported in the app. 
+    While we *are* working on this, you may currently see a red box
+    with an error message after clicking `Apply`. 
+
+    If you need this language and/or model size to work for your project, 
+    please open an [issue](https://github.com/HLasse/textdescriptives_app/issues). 
+    This may cause us to prioritize supporting your use case.
+    """
+    )
