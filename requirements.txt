@@ -1,4 +1,4 @@
-textdescriptives>=2.4.4
+textdescriptives>=2.6.1
 streamlit>=1.20.0
 watchdog
 https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.5.0/en_core_web_lg-3.5.0.tar.gz
