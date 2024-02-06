@@ -10,13 +10,13 @@ import streamlit as st
 import textdescriptives as td
 
 from data_viewer import DataViewer
-from process_text import text_to_metrics
 from options import (
     all_model_size_options_pretty_to_short,
     available_model_size_options,
     language_options,
     metrics_options,
 )
+from process_text import text_to_metrics
 
 ################
 # Introduction #
