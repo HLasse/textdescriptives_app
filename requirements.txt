@@ -1,7 +1,7 @@
 spacy==3.7.3
-textdescriptives==2.7.3
-pydantic==1.10.14
+textdescriptives==2.8.2
+pydantic>2.0
 streamlit>=1.20.0
 watchdog
-https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.7.0/en_core_web_lg-3.7.0.tar.gz
-https://github.com/explosion/spacy-models/releases/download/da_core_news_lg-3.7.0/da_core_news_lg-3.7.0.tar.gz
+# https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.7.0/en_core_web_lg-3.7.0.tar.gz
+# https://github.com/explosion/spacy-models/releases/download/da_core_news_lg-3.7.0/da_core_news_lg-3.7.0.tar.gz
