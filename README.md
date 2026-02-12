@@ -1,6 +1,18 @@
+---
+title: TextDescriptives
+emoji: 📊
+colorFrom: blue
+colorTo: green
+sdk: gradio
+sdk_version: "5.12.0"
+app_file: app.py
+python_version: "3.10"
+pinned: false
+---
+
 # TextDescriptives Demo
 
-A streamlit dashboard for extracting text metrics with TextDescriptives. Live at https://huggingface.co/spaces/HLasse/textdescriptives
+A Gradio dashboard for extracting text metrics with TextDescriptives. Live at https://huggingface.co/spaces/HLasse/textdescriptives
 
 
 ## TODO
@@ -11,7 +23,7 @@ A streamlit dashboard for extracting text metrics with TextDescriptives. Live at
 ## Installation
 
 ```shell
-conda create --name textdesc python==3.11
-pip install textdescriptives streamlit watchdog
-streamlit main.py
+uv venv && source .venv/bin/activate
+uv pip install -e ".[models]"
+python app.py
 ```

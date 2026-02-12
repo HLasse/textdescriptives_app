@@ -3,12 +3,10 @@ The text processing functionality.
 """
 
 from typing import List, Optional
-import streamlit as st
 import pandas as pd
 import textdescriptives as td
 
 
-@st.cache_data
 def text_to_metrics(
     string: str,
     language_short: str,

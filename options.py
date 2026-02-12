@@ -80,9 +80,18 @@ def available_model_size_options(lang) -> List[str]:
 
 
 class ModelAvailabilityChecker:
+    _compatibility_cache = None
+
     @staticmethod
     def available_models() -> List[str]:
-        return list(get_compatibility().keys())
+        if ModelAvailabilityChecker._compatibility_cache is None:
+            try:
+                ModelAvailabilityChecker._compatibility_cache = list(
+                    get_compatibility().keys()
+                )
+            except Exception:
+                ModelAvailabilityChecker._compatibility_cache = []
+        return ModelAvailabilityChecker._compatibility_cache
 
     @staticmethod
     def extract_language_and_size() -> List[List[str]]:
@@ -106,8 +115,11 @@ class ModelAvailabilityChecker:
 
     @staticmethod
     def available_model_sizes_for_language(lang: str) -> Set[str]:
-        return set([
+        sizes = set([
             size
             for (lang_, size) in ModelAvailabilityChecker.extract_language_and_size()
             if lang_ == lang and size in all_model_size_options_pretty_to_short().values()
         ])
+        if not sizes:
+            return set(all_model_size_options_pretty_to_short().values())
+        return sizes
