@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "textdescriptives>=2.8.2",
-    "gradio>=5.0,<6.0",
+    "gradio==5.50.0",
     "pandas",
     "pip",
     "en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0.tar.gz",
